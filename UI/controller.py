@@ -29,3 +29,46 @@ class Controller:
 
     # Altre Funzioni Event Handler
     # TODO
+
+    def mostra_automobili(self):
+        #evento per il pulsante mostra
+        automobili = self._model.get_automobili() #lista di oggetti automobile
+        self._view.lista_auto.controls.clear() #ripulisco la ListView
+
+        if not automobili: #se la lista è vuota
+            self._view.lista_auto.controls.append(
+                ft.Text("Nessuna automobile trovata nel database.")
+            )
+        else:
+            for a in automobili:
+                stato = "Disponibile ✅" if a.disponibile else "Noleggiata ❌"
+                self._view.lista_auto.controls.append(
+                    ft.Text(f"{a.codice} - {a.marca} {a.modello} ({a.anno}) | {a.posti} posti | {stato}")
+                )
+
+        self._view.update()
+
+    def cerca_automobili(self):
+        #evento per il pulsante cerca
+        modello = self._view.input_modello_auto.value.strip()
+        self._view.lista_auto_ricerca.controls.clear()
+
+        if not modello:
+            self._view.lista_auto_ricerca.controls.append(ft.Text("Inserisci un modello da cercare."))
+            self._view.update()
+            return
+
+        automobili = self._model.cerca_automobili_per_modello(modello) #usa la funzione implementata nel model
+
+        if not automobili:
+            self._view.lista_auto_ricerca.controls.append(
+                ft.Text(f"Nessuna automobile trovata per il modello '{modello}'.")
+            )
+        else: #se trovo delle automobili
+            for a in automobili:
+                stato = "Disponibile ✅" if a.disponibile else "Noleggiata ❌"
+                self._view.lista_auto_ricerca.controls.append(
+                    ft.Text(f"{a.codice} - {a.marca} {a.modello} ({a.anno}) | {a.posti} posti | {stato}")
+                )
+
+        self._view.update()
