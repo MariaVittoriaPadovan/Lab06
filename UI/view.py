@@ -85,21 +85,22 @@ class View:
 
             # Sezione 3
             # TODO
-            ft.Text("Automobili", size=20, weight=ft.FontWeight.BOLD),
+
             ft.Row(
-                controls=[pulsante_mostra],
-                alignment=ft.MainAxisAlignment.CENTER
+                controls=[ft.Text("Automobili", size=20, weight=ft.FontWeight.BOLD),
+                pulsante_mostra],
+                alignment=ft.MainAxisAlignment.START
             ),
             self.lista_auto,
             ft.Divider(),
 
             # Sezione 4
             # TODO
-            ft.Text("Cerca Automobile", size=20, weight=ft.FontWeight.BOLD),
+            ft.Text("Cerca Automobile", size=20, weight=ft.FontWeight.BOLD, text_align=ft.TextAlign.CENTER),
             ft.Row(
-                spacing=200,
-                controls=[self.input_modello_auto, pulsante_cerca],
-                alignment=ft.MainAxisAlignment.CENTER
+                spacing=10,
+                alignment=ft.MainAxisAlignment.START,
+                controls=[self.input_modello_auto, pulsante_cerca]
             ),
             self.lista_auto_ricerca
 

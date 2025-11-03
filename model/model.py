@@ -1,6 +1,3 @@
-from unittest import result
-
-from mysql.connector.errorcode import WARN_NON_ASCII_SEPARATOR_NOT_IMPLEMENTED
 
 from database.DB_connect import get_connection
 from model.automobile import Automobile
@@ -52,15 +49,16 @@ class Autonoleggio:
             if not risultato:
                 return None
 
+            automobili=[]
             for riga in risultato:
-                automobili=Automobile(
+                automobili.append(Automobile(
                         codice= riga['codice'],
                         marca=riga['marca'],
                         modello=riga['modello'],
                         anno=riga['anno'],
                         posti=riga["posti"],
                         disponibile=riga["disponibile"]
-                )
+                ))
             cursore.close()
             connessione.close()
             return automobili
@@ -80,7 +78,7 @@ class Autonoleggio:
             connessione = get_connection()
             cursore = connessione.cursor(dictionary=True)
 
-            query = "SELECT * FROM automobile WHERE modello LIKE %s"
+            query = ("SELECT * FROM automobile WHERE modello LIKE %s")
             cursore.execute(query, (f"%{modello}%",))
             result = cursore.fetchall()
 
