@@ -30,7 +30,7 @@ class Controller:
     # Altre Funzioni Event Handler
     # TODO
 
-    def mostra_automobili(self):
+    def mostra_automobili(self,e):
         #evento per il pulsante mostra
         automobili = self._model.get_automobili() #lista di oggetti automobile
         self._view.lista_auto.controls.clear() #ripulisco la ListView
@@ -48,7 +48,7 @@ class Controller:
 
         self._view.update()
 
-    def cerca_automobili(self):
+    def cerca_automobili(self,e):
         #evento per il pulsante cerca
         modello = self._view.input_modello_auto.value.strip()
         self._view.lista_auto_ricerca.controls.clear()

@@ -45,7 +45,7 @@ class Autonoleggio:
         try:
             connessione = get_connection()
             cursore=connessione.cursor(dictionary=True)
-            query='SELECT * FROM automobili'
+            query='SELECT * FROM automobile'
             cursore.execute(query)
             risultato=cursore.fetchall()  #legge tutte le righe rimanenti e restituisce un elenco
 
@@ -54,7 +54,7 @@ class Autonoleggio:
 
             for riga in risultato:
                 automobili=Automobile(
-                        targa= riga['targa'],
+                        codice= riga['codice'],
                         marca=riga['marca'],
                         modello=riga['modello'],
                         anno=riga['anno'],
@@ -87,15 +87,16 @@ class Autonoleggio:
             if not result:
                 return None
 
+            automobili=[]
             for riga in result:
-                automobili = Automobile(
-                        targa=riga["targa"],
+                automobili.append(Automobile(
+                        codice=riga["codice"],
                         marca=riga["marca"],
                         modello=riga["modello"],
                         anno=riga["anno"],
                         posti=riga["posti"],
                         disponibile=riga["disponibile"]
-                    )
+                    ))
 
             cursore.close()
             connessione.close()
