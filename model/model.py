@@ -1,4 +1,4 @@
-
+from database import automobile_DAO
 from database.DB_connect import get_connection
 from model.automobile import Automobile
 from model.noleggio import Noleggio
@@ -31,75 +31,9 @@ class Autonoleggio:
     def responsabile(self, responsabile):
         self._responsabile = responsabile
 
-    def get_automobili(self) -> list[Automobile] | None:
-        """
-            Funzione che legge tutte le automobili nel database
-            :return: una lista con tutte le automobili presenti oppure None
-        """
+    #TODO
+    def get_automobili(self):
+        return automobile_DAO.get_automobili(self)
 
-        # TODO
-
-        try:
-            connessione = get_connection()
-            cursore=connessione.cursor(dictionary=True)
-            query='SELECT * FROM automobile'
-            cursore.execute(query)
-            risultato=cursore.fetchall()  #legge tutte le righe rimanenti e restituisce un elenco
-
-            if not risultato:
-                return None
-
-            automobili=[]
-            for riga in risultato:
-                automobili.append(Automobile(
-                        codice= riga['codice'],
-                        marca=riga['marca'],
-                        modello=riga['modello'],
-                        anno=riga['anno'],
-                        posti=riga["posti"],
-                        disponibile=riga["disponibile"]
-                ))
-            cursore.close()
-            connessione.close()
-            return automobili
-
-        except Exception as e:
-            print(e)
-            return None
-
-    def cerca_automobili_per_modello(self, modello) -> list[Automobile] | None:
-        """
-            Funzione che recupera una lista con tutte le automobili presenti nel database di una certa marca e modello
-            :param modello: il modello dell'automobile
-            :return: una lista con tutte le automobili di marca e modello indicato oppure None
-        """
-        # TODO
-        try:
-            connessione = get_connection()
-            cursore = connessione.cursor(dictionary=True)
-
-            query = ("SELECT * FROM automobile WHERE modello LIKE %s")
-            cursore.execute(query, (f"%{modello}%",))
-            result = cursore.fetchall()
-
-            if not result:
-                return None
-
-            automobili=[]
-            for riga in result:
-                automobili.append(Automobile(
-                        codice=riga["codice"],
-                        marca=riga["marca"],
-                        modello=riga["modello"],
-                        anno=riga["anno"],
-                        posti=riga["posti"],
-                        disponibile=riga["disponibile"]
-                    ))
-
-            cursore.close()
-            connessione.close()
-            return automobili
-
-        except Exception as e:
-            print(e)
-            return None
+    def cerca_automobili_per_modello(self, modello):
+        return automobile_DAO.cerca_automobili_per_modello(self, modello)
