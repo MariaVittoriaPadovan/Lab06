@@ -64,8 +64,8 @@ class View:
 
         # Altri Pulsanti da implementare (es. "Mostra" e "Cerca")
         # TODO
-        pulsante_mostra = ft.ElevatedButton("Mostra", on_click=self.controller.mostra_automobili)
-        pulsante_cerca = ft.ElevatedButton("Cerca", on_click=self.controller.cerca_automobili)
+        pulsante_mostra_automobili = ft.ElevatedButton("Mostra", on_click=self.controller.aggiorna_lista_auto)
+        pulsante_cerca_automobile = ft.ElevatedButton("Cerca", on_click=self.controller.cerca_automobili_per_modello)
 
         # --- LAYOUT ---
         self.page.add(
@@ -87,8 +87,7 @@ class View:
             # TODO
 
             ft.Row(
-                controls=[ft.Text("Automobili", size=20, weight=ft.FontWeight.BOLD),
-                pulsante_mostra],
+                controls=[ft.Text("Automobili", size=20), pulsante_mostra_automobili],
                 alignment=ft.MainAxisAlignment.START
             ),
             self.lista_auto,
@@ -96,11 +95,11 @@ class View:
 
             # Sezione 4
             # TODO
-            ft.Text("Cerca Automobile", size=20, weight=ft.FontWeight.BOLD, text_align=ft.TextAlign.CENTER),
+            ft.Text("Cerca Automobile", size=20, text_align=ft.TextAlign.CENTER),
             ft.Row(
                 spacing=10,
                 alignment=ft.MainAxisAlignment.START,
-                controls=[self.input_modello_auto, pulsante_cerca]
+                controls=[self.input_modello_auto, pulsante_cerca_automobile],
             ),
             self.lista_auto_ricerca
 

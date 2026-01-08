@@ -39,32 +39,21 @@ class Autonoleggio:
 
         # TODO
 
-        try:
-            connessione = get_connection()
+        connessione = get_connection()
+        risultati=[]
+        if connessione is not None: #vedo se si è collegato
             cursore=connessione.cursor(dictionary=True)
+            #dictionary=True, creo gli oggetti che ricevo dal database come dei dizionari
             query='SELECT * FROM automobile'
             cursore.execute(query)
-            risultato=cursore.fetchall()  #legge tutte le righe rimanenti e restituisce un elenco
+            for riga in cursore:
+                risultati.append(Automobile(riga['codice'], riga['marca'], riga['modello'], riga['anno'], riga["posti"]))
 
-            if not risultato:
-                return None
-
-            automobili=[]
-            for riga in risultato:
-                automobili.append(Automobile(
-                        codice= riga['codice'],
-                        marca=riga['marca'],
-                        modello=riga['modello'],
-                        anno=riga['anno'],
-                        posti=riga["posti"],
-                        disponibile=riga["disponibile"]
-                ))
             cursore.close()
             connessione.close()
-            return automobili
-
-        except Exception as e:
-            print(e)
+            return risultati
+        else:
+            print("Connessione non trovata")
             return None
 
     def cerca_automobili_per_modello(self, modello) -> list[Automobile] | None:
@@ -74,32 +63,21 @@ class Autonoleggio:
             :return: una lista con tutte le automobili di marca e modello indicato oppure None
         """
         # TODO
-        try:
-            connessione = get_connection()
+
+        connessione = get_connection()
+        risultati = []
+        if connessione is not None:  # vedo se si è collegato
             cursore = connessione.cursor(dictionary=True)
-
-            query = ("SELECT * FROM automobile WHERE modello LIKE %s")
-            cursore.execute(query, (f"%{modello}%",))
-            result = cursore.fetchall()
-
-            if not result:
-                return None
-
-            automobili=[]
-            for riga in result:
-                automobili.append(Automobile(
-                        codice=riga["codice"],
-                        marca=riga["marca"],
-                        modello=riga["modello"],
-                        anno=riga["anno"],
-                        posti=riga["posti"],
-                        disponibile=riga["disponibile"]
-                    ))
+            # dictionary=True, creo gli oggetti che ricevo dal database come dei dizionari
+            query = 'SELECT * FROM automobile WHERE automobile.modello = %s' # %s è il parametro
+            cursore.execute(query, (modello,))
+            for riga in cursore:
+                risultati.append(
+                    Automobile(riga['codice'], riga['marca'], riga['modello'], riga['anno'], riga["posti"]))
 
             cursore.close()
             connessione.close()
-            return automobili
-
-        except Exception as e:
-            print(e)
+            return risultati
+        else:
+            print("Connessione non trovata")
             return None
